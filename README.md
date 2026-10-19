@@ -10,7 +10,7 @@
 
 - **Live URL (giao diện):** <https://p151-portal.vercel.app/login>
 - **API backend:** <https://p151-backend.vercel.app/docs> (Swagger) · health: <https://p151-backend.vercel.app/health>
-- **Video demo:** thư mục Google Drive <https://drive.google.com/drive/folders/1_c2ZhS3hxWx7OUdAvLgjqlY_PkdI5ble?usp=sharing>
+- **Video demo:** YouTube <https://www.youtube.com/watch?v=WBRYQv9sZlI> (3:04, công khai) · dự phòng Google Drive <https://drive.google.com/drive/folders/1_c2ZhS3hxWx7OUdAvLgjqlY_PkdI5ble?usp=sharing>
 
 | # | Deliverable | Vị trí |
 |---|---|---|
@@ -19,8 +19,8 @@
 | 3 | Architecture diagram | [`docs/architecture_diagram.md`](docs/architecture_diagram.md), [`docs/diagrams/`](docs/diagrams/) |
 | 4 | AI logs | [`docs/ai-logs.md`](docs/ai-logs.md) (8 trace thật của Agent), `GET /api/v1/mo/ai-logs`, [`docs/eval/runs/`](docs/eval/runs/) |
 | 5 | Live URL | <https://p151-portal.vercel.app/login> · API <https://p151-backend.vercel.app/docs> |
-| 6 | Video demo | [`docs/video-demo.md`](docs/video-demo.md) · [Google Drive](https://drive.google.com/drive/folders/1_c2ZhS3hxWx7OUdAvLgjqlY_PkdI5ble?usp=sharing) |
-| 7 | Pitch deck | ⬜ chưa có `docs/pitch-deck.pdf`; nội dung 10 slide và Q&A: [`docs/pitch-deck-content.md`](docs/pitch-deck-content.md) |
+| 6 | Video demo | [`docs/video-demo.md`](docs/video-demo.md) · [YouTube](https://www.youtube.com/watch?v=WBRYQv9sZlI) · [Google Drive](https://drive.google.com/drive/folders/1_c2ZhS3hxWx7OUdAvLgjqlY_PkdI5ble?usp=sharing) |
+| 7 | Pitch deck | [`docs/pitch-deck.pdf`](docs/pitch-deck.pdf) (10 trang 16:9) · ghi chú nói và Q&A: [`docs/pitch-deck-content.md`](docs/pitch-deck-content.md) |
 | 8 | Journal | [`docs/journal.md`](docs/journal.md) |
 | 9 | Worklog | [`docs/worklog.md`](docs/worklog.md) |
 | 10 | Evaluation evidence | [`docs/evaluation.md`](docs/evaluation.md), [`docs/eval/runs/`](docs/eval/runs/) |
@@ -58,7 +58,7 @@ Cổng web (Next.js) cho 6 vai: Cư dân, Tiếp nhận, Vệ sinh, Kỹ thuật
 | Backend | FastAPI + Python 3.11, Pydantic v2 |
 | Giao diện | `portal/` (Next.js, TypeScript, gọi `/api/v1`) + PWA điện thoại `src/mobile/` (JS thuần). UI tĩnh `src/web/` đã xoá 2026-10-12 |
 | Dữ liệu | **Mặc định in-memory** từ fixture YAML, reset được; tuỳ chọn PostgreSQL trên Supabase (`MO_STORE=postgres`, Alembic) + Supabase Storage cho ảnh |
-| DevOps | Docker Compose (backend, portal, db), GitHub Actions (ruff + pytest + coverage ≥ 60%), Vercel (portal và backend) |
+| DevOps | Docker Compose (backend, portal, db) · CI GitHub Actions (ruff + pytest + coverage ≥ 60%) chạy ở repo mirror công khai [`tuanank2112-crypto/P-151`](https://github.com/tuanank2112-crypto/P-151) vì Actions của repo tổ chức bị chặn do billing · CD: commit `main` xanh CI mới được đẩy sang mirror, Vercel tự deploy portal và backend ([docs/portal.md](docs/portal.md) §9) |
 
 ---
 
@@ -395,7 +395,8 @@ Gồm hai môi trường: **bản online** (Vercel + Supabase) và **bản Docke
 - Biến môi trường bắt buộc của backend online: `MO_STORE=postgres`, `DATABASE_URL` (Session pooler), `MO_PHOTO_STORE=supabase`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, **`AUTH_TOKEN_SECRET`** (thiếu thì mỗi instance tự sinh khoá riêng, đăng nhập sẽ lỗi 401 ngẫu nhiên), **`MO_DB_POOL=none`** (Supabase pooler chỉ cho 15 kết nối; để pool thì backend trả 503). Khoá LLM (`LLM_MODE`, `OPENAI_API_KEY`) chỉ đặt trong biến môi trường của Vercel, không commit. Thiếu khoá LLM thì hệ thống tự rơi về luật cố định.
 - Cờ tính năng: `MO_STOCK_ALERTS=true` (cảnh báo hết hàng), `MO_AGENT_ENABLED` (bật/tắt Agent), `MO_LATENCY_LOG` (ghi thời gian từng lời gọi model; `off` để tắt).
 - Kiểm tra sau mỗi lần deploy (đủ cả ba mới coi là xong): (a) `GET <backend>/health` trả `{"status":"ok",...}`; (b) đăng nhập được ở trang `/login`, mở danh sách phiếu mà không bị 401 xen kẽ; (c) một phản ánh thử đi qua đủ: gửi → phân loại → giao phòng ban.
-- Lưu ý khi deploy bằng CLI: `vercel deploy` chạy trong thư mục có `.git` có thể bị chặn vì tác giả commit không thuộc tài khoản Vercel (bản deploy nằm ở trạng thái Blocked, lệnh treo không báo lỗi). Cách làm: xuất mã nguồn sạch (`git archive HEAD`) ra thư mục tạm, `vercel link` rồi `vercel deploy --prod` từ đó.
+- **Deploy tự động (từ 2026-10-18):** merge vào `main` repo tổ chức ⇒ workflow `org-ci.yml` ở mirror [`tuanank2112-crypto/P-151`](https://github.com/tuanank2112-crypto/P-151) chạy `ci.yml` của commit và gửi trạng thái `ci/public-mirror` về commit đó ⇒ chỉ khi xanh mới đẩy sang `main` của mirror ⇒ Vercel deploy production. Lịch 15 phút; chạy tay: `gh workflow run org-ci.yml -R tuanank2112-crypto/P-151 --ref ci-sync`. Chi tiết và rollback: [docs/portal.md](docs/portal.md) §9. Deploy bằng CLI bên dưới chỉ dùng khi GitHub lỗi.
+- Lưu ý khi deploy bằng CLI (dự phòng): `vercel deploy` chạy trong thư mục có `.git` có thể bị chặn vì tác giả commit không thuộc tài khoản Vercel (bản deploy nằm ở trạng thái Blocked, lệnh treo không báo lỗi). Cách làm: xuất mã nguồn sạch (`git archive HEAD`) ra thư mục tạm, `vercel link` rồi `vercel deploy --prod` từ đó.
 
 ### 2. Chạy bản Docker trên máy
 
@@ -541,7 +542,7 @@ Danh sách đầy đủ và schema: Swagger <http://localhost:8000/docs>. Chi ti
 - Spec đích: [`docs/CR-BPTN-03.md`](docs/CR-BPTN-03.md); module engine: [`docs/maintenance.md`](docs/maintenance.md); cổng web: [`docs/portal.md`](docs/portal.md); app điện thoại: [`docs/mobile.md`](docs/mobile.md)
 - Kiến trúc: [`ARCHITECTURE.md`](ARCHITECTURE.md), [`docs/architecture_diagram.md`](docs/architecture_diagram.md), [`docs/diagrams/`](docs/diagrams/)
 - Bài toán và yêu cầu (phần "Active" bám code hiện hành): [`docs/01_problem_statement.md`](docs/01_problem_statement.md), [`02_product_brief.md`](docs/02_product_brief.md), [`03_lean_prd.md`](docs/03_lean_prd.md), [`04_ui_flow_wireframe.md`](docs/04_ui_flow_wireframe.md), [`05_traceability_and_review.md`](docs/05_traceability_and_review.md), [`data-contract-v1.md`](docs/data-contract-v1.md), [`playbook-v1.md`](docs/playbook-v1.md)
-- Bằng chứng nộp bài: [`docs/evaluation.md`](docs/evaluation.md), [`docs/ai-logs.md`](docs/ai-logs.md), [`docs/video-demo.md`](docs/video-demo.md), [`docs/journal.md`](docs/journal.md), [`docs/worklog.md`](docs/worklog.md), [`docs/submission/`](docs/submission/README.md)
+- Bằng chứng nộp bài: [`docs/evaluation.md`](docs/evaluation.md), [`docs/ai-logs.md`](docs/ai-logs.md), [`docs/video-demo.md`](docs/video-demo.md), [`docs/journal.md`](docs/journal.md), [`docs/worklog.md`](docs/worklog.md), [`docs/submission/`](docs/submission/README.md), ảnh bằng chứng (Swagger, health, CI, pytest + coverage, docker compose): [`docs/screenshots/evidence/`](docs/screenshots/evidence/README.md)
 - Technical Guidebook (của BTC): [`docs/guide/`](docs/guide/) hoặc <https://phoenix.note.transformerlabs.ai/technical-book>
 - Quy ước đóng góp: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 

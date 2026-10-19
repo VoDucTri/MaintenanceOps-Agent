@@ -188,12 +188,12 @@ Danh sách đầy đủ: [README.md](README.md) · [src/config.py](src/config.py
 | Agent LangGraph (`src/maintenance/agent/`), model `gpt-6-luna` trên production, fallback luật | **Đang chạy**; đo ở [docs/evaluation.md](docs/evaluation.md) §7.1 |
 | Repository memory/PostgreSQL, ảnh local/Supabase, job retry/leo thang | **Đang chạy** |
 | Portal Next.js (6 vai) + PWA điện thoại; vật tư theo yêu cầu/nhập kho; thông báo kho | **Đang chạy** |
-| Deploy online | **Đang chạy** (Vercel `p151-portal`, `p151-backend`; Supabase). Bản deploy do một người đẩy bằng CLI, chưa nối GitHub |
+| Deploy online | **Đang chạy** (Vercel `p151-portal`, `p151-backend`; Supabase). Từ 2026-10-18 deploy tự động qua GitHub: commit `main` của repo tổ chức phải xanh CI ở mirror [`tuanank2112-crypto/P-151`](https://github.com/tuanank2112-crypto/P-151) mới được đẩy sang `main` của mirror, Vercel deploy production từ đó ([docs/portal.md](docs/portal.md) §9) |
 | Log AI của Agent | **Đang chạy** (RAM + `latency.jsonl`), xem [docs/ai-logs.md](docs/ai-logs.md) |
 | Hook `safety_llm` (guard an toàn riêng) | Có trong code, **không bật** |
 | Phoenix & LangSmith telemetry, GPT-4o + vision | **Mục tiêu**, chưa tích hợp |
 | D-01: chỉ bổ sung mới + snapshot có cấu trúc cho LLM | **Contract đích**, chưa code ([contract](planning/02_2026-10-03_truong-mvp-prep/specs/01-CONTRACTS.md)) |
-| CI GitHub Actions (ruff, pytest, coverage ≥ 60%) | Có workflow; đang đỏ do billing của tổ chức, chưa có lần chạy thật cho bước coverage |
+| CI GitHub Actions (ruff, pytest, coverage ≥ 60%) | **Đã chạy, xanh** ở repo mirror công khai `tuanank2112-crypto/P-151` (Actions của repo tổ chức bị chặn do billing): lượt [39105089281](https://github.com/tuanank2112-crypto/P-151/actions/runs/39105089281) trên `main` `5676a4f`, 2026-10-18 |
 
 ## 11. Quyết định kiến trúc đã chốt
 

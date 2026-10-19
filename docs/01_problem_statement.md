@@ -37,8 +37,8 @@ Các vấn đề chính (giả thuyết, chưa đo trên dữ liệu thật):
 - Hai playbook: `PB-CLN-01` (vệ sinh khu vực chung) và `PB-TEC-01` (đèn chiếu sáng khu vực chung), tòa S1/S2 Ocean Park mô phỏng.
 - Actor: Cư dân, Agent, Tiếp nhận (BPTN), Phòng Vệ sinh, Phòng Kỹ thuật, Kho, BQL. Mỗi vai có tài khoản và màn hình trên portal; Kho có màn hình riêng.
 - Giao việc ở cấp **phòng ban** (`DEPT_CLEANING`, `DEPT_TECHNICAL`). 
-- Mười trạng thái: `RECEIVED`, `VERIFYING`, `NEED_INFO`, `ON_HOLD`, `ROUTED`, `IN_PROGRESS`, `READY_FOR_REVIEW`, `MERGED`, `CLOSED`, `CANCELLED`.
-- Ba mức ưu tiên `HIGH`, `MEDIUM`, `LOW`; ba mức an toàn `NONE`, `UNCLEAR`, `EMERGENCY`.
+- Mười trạng thái: `RECEIVED` (đã tiếp nhận), `VERIFYING` (đang xác minh), `NEED_INFO` (chờ bổ sung thông tin), `ON_HOLD` (tạm hoãn, chủ yếu chờ vật tư), `ROUTED` (đã chuyển phòng ban, chờ nhận), `IN_PROGRESS` (đang xử lý), `READY_FOR_REVIEW` (chờ nghiệm thu), `MERGED` (đã gộp vào ticket gốc), `CLOSED` (hoàn thành, BQL đã đóng), `CANCELLED` (đã hủy).
+- Ba mức ưu tiên: `HIGH` (cao), `MEDIUM` (trung bình), `LOW` (thấp). Ba mức an toàn: `NONE` (không có tín hiệu nguy hiểm), `UNCLEAR` (chưa rõ, nghi ngờ; Bậc 2), `EMERGENCY` (khẩn cấp; Bậc 1). Không có trạng thái `EMERGENCY`: khẩn cấp là mức an toàn, ticket dừng ở `VERIFYING` kèm blocker `EMERGENCY_PENDING_BQL`.
 
 ## C. Luồng mục tiêu
 
