@@ -30,7 +30,7 @@ Khi sửa nội dung sách, mô tả rõ trong PR: **chương nào**, **sửa g�
    ruff check .
    pytest
    ```
-4. Mở PR vào `main`. CI (`.github/workflows/ci.yml`) phải xanh.
+4. Mở PR vào `main`. CI (`.github/workflows/ci.yml`) phải xanh: trạng thái `ci/public-mirror` trên commit, do repo mirror công khai `tuanank2112-crypto/P-151` chạy (Actions của repo tổ chức bị chặn do billing).
 
 ## Không commit thông tin bí mật
 

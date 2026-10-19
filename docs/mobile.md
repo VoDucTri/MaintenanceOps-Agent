@@ -1,14 +1,14 @@
 # `src/mobile/` — App điện thoại (PWA) cho mọi vai vận hành
 
 FastAPI phục vụ thư mục này ở `/app/` (`src/main.py`), cùng origin với API `/api/v1` và cổng web `portal/` (phục vụ ở `/`; UI tĩnh `/ui/` cũ đã gỡ).
-Plain JS (ES module) + CSS, KHÔNG Tailwind, KHÔNG bước build. Hồ sơ: [`planning/11_2026-10-09_mobile-pwa-app/`](../planning/11_2026-10-09_mobile-pwa-app/plan.md).
-**Giao diện = thiết kế `portal/`** (đợt 2, [`specs/SPEC-P04-PORTAL-UI.md`](../planning/11_2026-10-09_mobile-pwa-app/specs/SPEC-P04-PORTAL-UI.md)): class chép nguyên từ
+Plain JS (ES module) + CSS, KHÔNG Tailwind, KHÔNG bước build. Hồ sơ: `planning/11_2026-10-09_mobile-pwa-app/`.
+**Giao diện = thiết kế `portal/`** (đợt 2, `specs/SPEC-P04-PORTAL-UI.md`): class chép nguyên từ
 `portal/src/app/globals.css`, icon từ `portal/src/components/icons.tsx`, bố cục từ `shell.tsx`/`resident-app.tsx`/`management-app.tsx`.
 Backend vẫn là FastAPI gốc (Docker `:8000`); app gọi API Python trực tiếp. Từ plan18 v1.11.0 local, web portal cũng gọi cùng API Python qua BFF nên cùng ticket/kho/Agent; không có DB portal runtime.
 
 ## 1. Nguyên tắc (đọc trước khi sửa)
 - App là **client mỏng**: chỉ gọi endpoint có sẵn (`/auth/*`, `/resident/*`, `/bql/*`, `/mo/*` của phòng ban/BPTN/kho, ảnh) — bảng ở
-  [`specs/SPEC-P05-ALL-ROLES.md`](../planning/11_2026-10-09_mobile-pwa-app/specs/SPEC-P05-ALL-ROLES.md) §2–§4.
+  `specs/SPEC-P05-ALL-ROLES.md` §2–§4.
   Mọi luật nghiệp vụ nằm trong engine; web và app cùng API ⇒ cùng DB ⇒ đồng bộ, không có cơ chế đồng bộ riêng.
 - **Service worker không bao giờ trả `/api/` từ cache** (`sw.js`: `if (url.pathname.startsWith('/api/')) return;` đứng trước mọi `respondWith`).
   Test `test_sw_never_caches_api` khoá điều này.

@@ -1,4 +1,0 @@
-Command: python -m ruff check --no-cache src tests
-All checks passed!
-
-Exit: 0

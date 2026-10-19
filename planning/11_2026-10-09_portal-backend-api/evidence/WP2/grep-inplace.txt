@@ -1,3 +1,0 @@
-$ rg (excluding src/db, legacy)
-MATCHES=0
-EXIT=0

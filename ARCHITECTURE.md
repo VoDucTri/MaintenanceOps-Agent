@@ -158,7 +158,7 @@ Quyền được kiểm ở **backend** (router chỉ bọc method engine); UI �
 - **Mỗi mutation = một transaction** qua `_mutate`: `get_for_update` (`FOR UPDATE`) → thao tác trên bản sao sâu → `save` (kiểm `version`) + audit + outbox cùng commit; fail closed. Lỗi DB → `ConcurrencyError` 409 / `StoreUnavailableError` 503 / `StorePermissionError` 403. Hành động bị từ chối ghi audit ở transaction riêng.
 - `audit_log` và `notifications` append-only (trigger chặn UPDATE/DELETE). `notifications` là **outbox**, không khẳng định đã gửi ra dịch vụ ngoài.
 - Khởi động: `check_photo_store` → `build_engine` (kiểm kết nối + revision, sai ⇒ exit 3) → `seed_if_empty` (chỉ khi rỗng, advisory lock một leader, **không reset**). Job 5 phút giữ `pg_try_advisory_xact_lock(151001)` — một backend chạy mỗi lượt. `reset`/`evaluate` trên DB chung cần `MO_ALLOW_RESET=true`.
-- Chi tiết: [brain4agent/-data-architecture.md](brain4agent/-data-architecture.md) · [data-contract-v1](docs/data-contract-v1.md).
+- Chi tiết: brain4agent/-data-architecture.md · [data-contract-v1](docs/data-contract-v1.md).
 
 ## 8. API
 
@@ -188,12 +188,12 @@ Danh sách đầy đủ: [README.md](README.md) · [src/config.py](src/config.py
 | Agent LangGraph (`src/maintenance/agent/`), model `gpt-6-luna` trên production, fallback luật | **Đang chạy**; đo ở [docs/evaluation.md](docs/evaluation.md) §7.1 |
 | Repository memory/PostgreSQL, ảnh local/Supabase, job retry/leo thang | **Đang chạy** |
 | Portal Next.js (6 vai) + PWA điện thoại; vật tư theo yêu cầu/nhập kho; thông báo kho | **Đang chạy** |
-| Deploy online | **Đang chạy** (Vercel `p151-portal`, `p151-backend`; Supabase). Bản deploy do một người đẩy bằng CLI, chưa nối GitHub |
+| Deploy online | **Đang chạy** (Vercel `p151-portal`, `p151-backend`; Supabase). Từ 2026-10-18 deploy tự động qua GitHub: commit `main` của repo tổ chức phải xanh CI ở mirror [`tuanank2112-crypto/P-151`](https://github.com/tuanank2112-crypto/P-151) mới được đẩy sang `main` của mirror, Vercel deploy production từ đó ([docs/portal.md](docs/portal.md) §9) |
 | Log AI của Agent | **Đang chạy** (RAM + `latency.jsonl`), xem [docs/ai-logs.md](docs/ai-logs.md) |
 | Hook `safety_llm` (guard an toàn riêng) | Có trong code, **không bật** |
 | Phoenix & LangSmith telemetry, GPT-4o + vision | **Mục tiêu**, chưa tích hợp |
-| D-01: chỉ bổ sung mới + snapshot có cấu trúc cho LLM | **Contract đích**, chưa code ([contract](planning/02_2026-10-03_truong-mvp-prep/specs/01-CONTRACTS.md)) |
-| CI GitHub Actions (ruff, pytest, coverage ≥ 60%) | Có workflow; đang đỏ do billing của tổ chức, chưa có lần chạy thật cho bước coverage |
+| D-01: chỉ bổ sung mới + snapshot có cấu trúc cho LLM | **Contract đích**, chưa code (contract) |
+| CI GitHub Actions (ruff, pytest, coverage ≥ 60%) | **Đã chạy, xanh** ở repo mirror công khai `tuanank2112-crypto/P-151` (Actions của repo tổ chức bị chặn do billing): lượt [39105089281](https://github.com/tuanank2112-crypto/P-151/actions/runs/39105089281) trên `main` `5676a4f`, 2026-10-18 |
 
 ## 11. Quyết định kiến trúc đã chốt
 
@@ -217,6 +217,6 @@ Toàn bộ D-01…D-13 và các quyết định bị thay thế: [CR-BPTN-03 §1
 | Sơ đồ components + data flow mục tiêu và khác biệt với code | [docs/architecture_diagram.md](docs/architecture_diagram.md) · [data-flow](docs/diagrams/maintenanceops-data-flow-20261019/README.md) |
 | Log AI, số đo, bằng chứng nộp bài | [docs/ai-logs.md](docs/ai-logs.md) · [docs/evaluation.md](docs/evaluation.md) |
 | UI flow | [docs/04_ui_flow_wireframe.md](docs/04_ui_flow_wireframe.md) |
-| Dữ liệu và lưu trữ | [brain4agent/-data-architecture.md](brain4agent/-data-architecture.md) |
-| Lịch sử hồ sơ/specs | [planning/](planning/) (05 component, 08 data flow, 01–02 persistence/engine) |
+| Dữ liệu và lưu trữ | brain4agent/-data-architecture.md |
+| Lịch sử hồ sơ/specs | planning/ (05 component, 08 data flow, 01–02 persistence/engine) |
 | Chạy app, API, env | [README.md](README.md) |

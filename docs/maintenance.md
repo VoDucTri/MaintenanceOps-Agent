@@ -1,7 +1,7 @@
 # `src/maintenance/` — Tài liệu module MaintenanceOps (engine CR-BPTN-03)
 
 > Dữ liệu MÔ PHỎNG (`SIM-*`). Spec duy nhất: [`CR-BPTN-03.md`](CR-BPTN-03.md); khi tài liệu này lệch CR-03 thì CR-03 thắng.
-> Hồ sơ cài đặt: [`planning/01_2026-10-01_cr03-p0-engine/`](../planning/01_2026-10-01_cr03-p0-engine/) (plan + specs + reports + evidence).
+> Hồ sơ cài đặt: `planning/01_2026-10-01_cr03-p0-engine/` (plan + specs + reports + evidence).
 > Trạng thái (audit 2026-10-17): engine CR-03 P0 + P1 đã chạy trong sản phẩm v1.17.9 (1462 test là số của đợt P0 ban đầu; số đo mới nhất ghi ở `brain4agent/changelog.md`, vd 3830–3961 pass). Router `/api/v1` và UI `portal/` + `src/mobile/` đã nối các hành động; `src/web/` đã xoá. Phần nào dưới đây còn ghi "chưa nối/không làm ở P0" là lịch sử.
 
 ## 1. Mục đích và ranh giới
@@ -75,7 +75,7 @@ Chặn khác: `reopen()` luôn `InvalidTransitionError`; `set_assignee()` luôn 
 Cư dân chỉ thấy nhãn "Đang được kiểm tra" và lời trong `i18n/vi.yaml` (không `risk_*`, `reason_code`, `priority`).
 
 ### Khẩn cấp gặp trùng, hai việc, ticket cùng chỗ (hồ sơ 23, v1.16.0, 2026-10-14)
-Hồ sơ [`planning/23_2026-10-14_emergency-dup-split/`](../planning/23_2026-10-14_emergency-dup-split/plan.md).
+Hồ sơ `planning/23_2026-10-14_emergency-dup-split/`.
 - **Nghi trùng (P01):** ca vừa thành `EMERGENCY_PENDING_BQL` (2b, E01, T07) mà cùng vị trí đã có ca khẩn cấp mở tạo trước ⇒ `_mark_emergency_duplicate` ghi `blocker.related_ticket_id` = ca cũ nhất (không trỏ dây chuyền) và `duplicate_count +1` trên ca đó. Ca vẫn ở BQL, KHÔNG tự gộp. Trả số khi ca nghi trùng bị hạ mức (T05), đóng (T10), hủy, hoặc gộp vào ca khác; gộp vào đúng gốc ⇒ `counted=False`. Thiếu vị trí ⇒ không nghi trùng. Payload `emergency.created` có `suspected_duplicate_of`.
 - **Tách sau khi gỡ (P02):** `_try_split` đk 4 chỉ còn `risk_level == NONE`; ticket con chép `safety_cleared_*` của gốc nên 2b của con không đọc lại phần đã được người gỡ.
 - **Giữ cùng chỗ (P03):** cờ `hold_near_open_emergency` tắt vẫn giữ ticket (`ON_HOLD/WAITING_EMERGENCY`) khi ca khẩn cấp cùng vị trí được người ghim hoặc **Agent đọc** ra cùng loại việc (gồm cả ca đã gộp vào nó). Chưa ai đọc ⇒ không giữ, chỉ liên kết. KHÔNG đoán loại bằng từ khoá. Cờ bật ⇒ giữ mọi ticket cùng chỗ như cũ.
@@ -137,28 +137,28 @@ Bộ dừng an toàn: `tests/test_maintenance/data/safety_stop_sets_p0.yaml` (v�
 Endpoint router cho 5 method + `set_priority` (gợi ý ở `specs/00-ARCHITECTURE.md` §4.1), UI, persistence/deploy, `develop` merge, Q22 (bộ phân loại cho "bóng đèn bị cháy" ⇒ `OUT_OF_SCOPE`, chủ rules/playbook), P1 (T16/T17/E02, gộp ticket, PRI-U1/U2, LLM an toàn).
 
 ## 10. Bộ nhãn CR-03 của Trường (PR #6, merge lần 2 — plan 02 Q09, 2026-10-03)
-Hồ sơ gốc: [`planning/02_2026-10-03_truong-mvp-prep/`](../planning/02_2026-10-03_truong-mvp-prep/plan.md) (scope, quyết định D-01…D-08, bốn demo, [rules safety](../planning/02_2026-10-03_truong-mvp-prep/specs/SPEC-P04-SAFETY.md), [fixture/nghiệm thu](../planning/02_2026-10-03_truong-mvp-prep/specs/TESTING-ACCEPTANCE.md)). D-01 (bổ sung mới + snapshot có cấu trúc cho LLM) là contract ĐÍCH, CHƯA code; D-02…D-07 user confirmed; D-08 nhóm pending.
+Hồ sơ gốc: `planning/02_2026-10-03_truong-mvp-prep/` (scope, quyết định D-01…D-08, bốn demo, rules safety, fixture/nghiệm thu). D-01 (bổ sung mới + snapshot có cấu trúc cho LLM) là contract ĐÍCH, CHƯA code; D-02…D-07 user confirmed; D-08 nhóm pending.
 - `safety.py` độc lập của PR #6 (`assess_safety(text, previous_risk)`) KHÔNG giữ: chỉ có MỘT tầng an toàn là `assess(text, lexicon)` ở §3. Hàm `assess_safety` chỉ còn là adapter trong `tests/test_maintenance/test_safety_p0.py` (kiểm `RiskLevel`, ranh giới `RawTicket`, giữ mức cũ bằng max).
 - Bộ nhãn giữ nguyên: 62 câu trong `test_safety_p0.py`, 34 ca `seed/maintenance_cr03/safety_cases.json`, fixture đích `seed/maintenance_cr03/tickets.yaml` (startup vẫn `seed/maintenance_v1/`). Engine cao hơn nhãn ở 4 câu ⇒ ghim trong `ABOVE_LABEL` (không hạ); thấp hơn nhãn đã vá bằng từ vựng (`giật` đứng riêng ⇒ Bậc 2). Bảng đối chiếu: `planning/02_2026-10-02_merge-develop/evidence/`.
 - Lệch thứ tự phân loại/an toàn ĐÃ ĐÓNG (plan 02 Q11, 2026-10-04): Trường sửa fixture đích (`954dcab`), CLN-004/TEC-005 không còn `playbook_id`/`proposed_department_id`/`review_status` vì 2b chạy trước phân loại; `test_cr03_targets.py` khẳng định ba trường vắng mặt và so với baseline v1.3 của `seed/maintenance_v1/`. Fixture CR03 đạt 12/12 trên engine (evidence/13). Ticket Bậc 1 không có bài kiểm phân loại: muốn kiểm thì thêm ca riêng.
 
 ## 11. Công việc của Trường (nhánh `feature/truong`)
 
-Hồ sơ: [plan 02](../planning/02_2026-10-03_truong-mvp-prep/plan.md).
+Hồ sơ: plan 02.
 D-01 được người dùng xác nhận; D-02–D-07 dùng mặc định CR-03. D-08 APPROVED: người dùng thông báo leader Lê Thị Châm Anh duyệt phạm vi MVP 04/10 và D-01–D-07; ngày duyệt được báo là 2026-10-02, chưa cung cấp giờ. Ghi nhận ngày 2026-10-03; commit a5e2705/PR #6 là bản tham chiếu được người dùng xác nhận trong phiên này, không khẳng định commit đã tồn tại ngày 02/10. Nguồn: thông báo người dùng trong phiên; chưa có link biên bản ngoài. Không mở rộng thành duyệt mọi CR/backlog hoặc nghiệm thu runtime.
 
 ### Kết quả chuẩn bị local ngày 2026-10-03
 
 5 gói đã có đầu ra và report. Root đo lại 266 tests pass, 20 Postgres deselected; 72 safety tests, 9 target tests; kiểm tra hồ sơ 57/57 pass. Lint và format 3 file Python mới đạt. Python syntax được kiểm tra; repo chưa cấu hình typechecker.
-Format toàn repo còn 2 file baseline ngoài phạm vi; Postgres và demo online chưa chạy trong phiên này. Bằng chứng [pytest](../planning/02_2026-10-03_truong-mvp-prep/evidence/root/final-pytest.txt), [hồ sơ](../planning/02_2026-10-03_truong-mvp-prep/evidence/root/package-check.txt).
+Format toàn repo còn 2 file baseline ngoài phạm vi; Postgres và demo online chưa chạy trong phiên này. Bằng chứng pytest, hồ sơ.
 Hàm safety vẫn là rules độc lập; trạng thái này không có nghĩa API đã tích hợp safety/D-01 hoặc runtime đã được nghiệm thu. D-08 duyệt thiết kế được ghi nhận riêng theo thông báo người dùng.
 
 ### Công việc ngày 03/10
 
-[Checklist và hợp đồng 7 task](../planning/02_2026-10-03_truong-mvp-prep/specs/SPEC-P06-DAY03.md): asset, vật tư, trùng cơ bản, wording/quyền và chạy thử 4 demo. Trường chuẩn bị/kiểm thử và bàn giao lỗi; Như Ý sở hữu engine/safety, Châm Anh sở hữu API/storage, Trí sở hữu UI. Kết quả chạy local cô lập (SHA 0ea04ad, nhánh feature/truong): 23 record = 17 PASS / 1 FAIL / 5 BLOCKED / 0 NOT_RUN. Asset 3/3, vật tư 4/4, trùng 4/4 PASS; wording WORD-03 PASS, WORD-01/02/04 BLOCKED (safety Bậc 2/Bậc 1, rating-once, reopen chưa tích hợp); demo 5 PASS, 1 FAIL (DEMO-01-RATING: `engine.rate` ghi đè rating, engine.py:548-553), 2 BLOCKED (DEMO-04). Owner lỗi/BLOCKED: Như Ý. Chờ người quyết: ASSET-03, STOCK-04, owner reopen/rating-once. D3-05/06 chưa đóng; runtime/online chưa nghiệm thu. Báo cáo: [tổng hợp](../planning/02_2026-10-03_truong-mvp-prep/deliverables/day03-summary.md), [wording](../planning/02_2026-10-03_truong-mvp-prep/deliverables/day03-wording.md), [kết quả](../planning/02_2026-10-03_truong-mvp-prep/deliverables/day03-results.json).
+Checklist và hợp đồng 7 task: asset, vật tư, trùng cơ bản, wording/quyền và chạy thử 4 demo. Trường chuẩn bị/kiểm thử và bàn giao lỗi; Như Ý sở hữu engine/safety, Châm Anh sở hữu API/storage, Trí sở hữu UI. Kết quả chạy local cô lập (SHA 0ea04ad, nhánh feature/truong): 23 record = 17 PASS / 1 FAIL / 5 BLOCKED / 0 NOT_RUN. Asset 3/3, vật tư 4/4, trùng 4/4 PASS; wording WORD-03 PASS, WORD-01/02/04 BLOCKED (safety Bậc 2/Bậc 1, rating-once, reopen chưa tích hợp); demo 5 PASS, 1 FAIL (DEMO-01-RATING: `engine.rate` ghi đè rating, engine.py:548-553), 2 BLOCKED (DEMO-04). Owner lỗi/BLOCKED: Như Ý. Chờ người quyết: ASSET-03, STOCK-04, owner reopen/rating-once. D3-05/06 chưa đóng; runtime/online chưa nghiệm thu. Báo cáo: tổng hợp, wording, kết quả.
 
 ## 12. Sửa logic sau rà soát 2026-10-04 (plan 04)
-Hồ sơ: [`planning/04_2026-10-04_logic-review-fix/`](../planning/04_2026-10-04_logic-review-fix/plan.md) (PATCH; §1 lỗi đo được, §2 quyết định Q01–Q09).
+Hồ sơ: `planning/04_2026-10-04_logic-review-fix/` (PATCH; §1 lỗi đo được, §2 quyết định Q01–Q09).
 - **Ngoài phạm vi (A1, phần engine):** cư dân không phải người báo / phòng ban không giữ ticket vẫn nhận 403 + audit (contract cũ), nhưng lỗi KHÔNG có `unchanged_status`; `transition` của người ngoài phạm vi bị từ chối TRƯỚC 409 (409 nêu trạng thái hiện tại). Giá trị ghi vào dòng ACTION_DENIED cắt ở `DENIED_TEXT_MAX` (500 ký tự). Đổi sang 404 là đổi contract: chờ nhóm.
 - **Phần backend TÁCH RA (Q16, chủ API Châm Anh):** chặn loại ảnh ở `POST /evidence` (A2), route ảnh chạy phần chặn bằng `run_in_threadpool` (A3), `/mo/ai-logs` chỉ BPTN/BQL/QA + lọc trước `limit` (A4), `/mo/tickets` sắp theo `queue_sort_key` (L2), giới hạn chữ tự do 2000 ở route, khoá session đăng nhập (L1) — CHƯA có trong code, nằm ở `handoffs/H03_backend-api.md` + `H03_backend-api.patch` kèm 5 test.
 - **AI Logs (E3):** engine truyền `ticket_id` vào `propose()` ⇒ log không còn `PENDING`.
@@ -173,7 +173,7 @@ Hồ sơ: [`planning/04_2026-10-04_logic-review-fix/`](../planning/04_2026-10-04
 - Test: `tests/test_maintenance/test_logic_review_fixes.py` (11, phần engine), `test_rules_review_fixes.py` (34), `test_safety_review_fixes.py` + ca SC-77…SC-219, 2 test proposer; mọi test mới từng đỏ trên code cũ (phần còn lại là đối chứng). 5 test backend nằm trong bản vá H03.
 
 ## 13. Làm cứng Agent bằng kiểm thử biến thể vị trí (plan 05, 2026-10-04)
-Hồ sơ: [`planning/05_2026-10-04_agent-hardening/`](../planning/05_2026-10-04_agent-hardening/plan.md) (Q01–Q07). Lý do: câu thử của plan 04 không có vị trí kiểu cư dân thật, nên lỗi lớp "chữ vị trí trùng từ tín hiệu" lọt (demo: "… tòa SIM-C có khối rác" ⇒ khẩn cấp vì từ xác nhận `toa` = "tỏa").
+Hồ sơ: `planning/05_2026-10-04_agent-hardening/` (Q01–Q07). Lý do: câu thử của plan 04 không có vị trí kiểu cư dân thật, nên lỗi lớp "chữ vị trí trùng từ tín hiệu" lọt (demo: "… tòa SIM-C có khối rác" ⇒ khẩn cấp vì từ xác nhận `toa` = "tỏa").
 - **Bộ biến thể (cổng chính, Q01):** `tests/test_maintenance/test_safety_metamorphic.py` bọc MỌI ca nhãn an toàn bằng nhiều mẫu vị trí (đầu/cuối/giữa câu, có/không dấu); `test_classify_metamorphic.py` có kho ~150 câu cư dân × ~18 mẫu vị trí (có/không dấu). Thêm vị trí KHÔNG được đổi mức an toàn, loại việc, và `extract_location` phải ra đúng vị trí mẫu. Chạy riêng: `python -m tests.test_maintenance.test_safety_metamorphic`.
 - **Từ vựng an toàn `2026-10-04.p0e`:** `homograph_confirmers` dùng cặp chữ chắc nghĩa ("toa ra", "bay ra", "boc len"…) thay vì từ đơn trùng chữ vị trí; thêm tiền tố B-01 (bãi đỗ xe, tòa nhà, số bằng chữ…); `safety._Lookups` bỏ qua đuôi vị trí sau marker "giờ hết rồi" (T2-02).
 - **Phân loại:** đèn tuýp ("bóng tuýp chết") do luật bắt; câu trộn vẫn CATEGORY_UNCLEAR kể cả khi LLM chọn một; nước tràn vào tủ điện/ổ cắm hoặc "lòi/lộ dây điện" ⇒ OUT_OF_SCOPE (BPTN đọc), không giao phòng ban.
@@ -186,7 +186,7 @@ Hồ sơ: [`planning/05_2026-10-04_agent-hardening/`](../planning/05_2026-10-04_
 - Để P1: tín hiệu an toàn P1 (gas, kim tiêm, nước vào tủ điện, đèn nóng), luồng trùng đầy đủ (CR §8), tách ticket khi một phản ánh có hai việc, đếm trả sai phòng ban.
 
 ## 14. Tốc độ đọc danh sách — cache `list()` theo `xmin` (plan 09, v1.5.0, 2026-10-08)
-Hồ sơ: [`planning/09_2026-10-08_backend-speed/`](../planning/09_2026-10-08_backend-speed/plan.md). Audit: `PostgresRepository.list()` kéo toàn bộ doc
+Hồ sơ: `planning/09_2026-10-08_backend-speed/`. Audit: `PostgresRepository.list()` kéo toàn bộ doc
 (725 KB với 65 ticket) mỗi request ⇒ danh sách cư dân 2.7 s, BPTN 1.5 s trên Supabase.
 - **`PostgresRepository.list()`** (`store/postgres.py`, `_LIST_CHANGED`): MỘT câu SQL gửi cặp `(ticket_id, xmin)` đang giữ; DB trả `xmin` mọi dòng và
   `doc` CHỈ của dòng mới/đổi. Không TTL ⇒ ghi từ backend khác thấy ngay ở lần đọc sau. Doc lỗi ⇒ ném, cache giữ nguyên. `cache_stats()` cho test/log
@@ -197,7 +197,7 @@ Hồ sơ: [`planning/09_2026-10-08_backend-speed/`](../planning/09_2026-10-08_ba
 - Số đo (median, Supabase): cư dân 2676→201 ms, BPTN 1514→224 ms, BQL 503→219 ms; API trả về giống hệt từng byte (8/8 vai). Test: `test_list_cache.py` (T1–T8).
 
 ## 15. Độ trễ: engine đọc, ảnh, gzip (plan 12, v1.8.0, 2026-10-09)
-Hồ sơ: [`planning/12_2026-10-09_backend-latency/`](../planning/12_2026-10-09_backend-latency/plan.md).
+Hồ sơ: `planning/12_2026-10-09_backend-latency/`.
 - **Hai engine SQLAlchemy** (`store/postgres.py`): `sql_engine` = GHI (transaction, khoá dòng, lease; pre-ping; 2+0 kết nối);
   `sql_read_engine` = ĐỌC (`isolation_level="AUTOCOMMIT"`, KHÔNG pre-ping, 2+1). Mọi đọc ngoài transaction qua `PostgresRepository._read(fn)`:
   thử lại ĐÚNG một lần khi `DBAPIError.connection_invalidated`, lỗi khác dịch như cũ. CẤM `_read_engine.begin()`; ghi luôn qua `transaction()`.
@@ -239,7 +239,7 @@ Hồ sơ: [`planning/12_2026-10-09_backend-latency/`](../planning/12_2026-10-09_
 - **Prompt `agent-prompt/10` (v1.17.8, 2026-10-16):** bước VI_TRI thêm "tầng hiểu theo NGHĨA trong toàn bộ lời cư dân, kể cả viết tắt/nói tự nhiên (\"t3\", \"lầu 3\", \"tầng ba\"), kể cả khi tòa đã lấy từ hồ sơ" — gpt-6-luna bỏ qua "t3" (SIM-TKT-0087). CẤM thay bằng regex `t\d`. Đo agy: 4/4 cách viết tầng, G-LIVE mẫu 18/18; CHƯA đo luna.
 
 ## 18. Phục vụ portal Next.js (hồ sơ 11, v1.7.0, 2026-10-09)
-Hồ sơ: [`planning/11_2026-10-09_portal-backend-api/`](../planning/11_2026-10-09_portal-backend-api/plan.md) (SPEC-P01, SPEC-P04). Nguyên tắc:
+Hồ sơ: `planning/11_2026-10-09_portal-backend-api/` (SPEC-P01, SPEC-P04). Nguyên tắc:
 KHÔNG thêm trường/giá trị enum vào doc ticket JSONB (bản Render cũ đọc chung Supabase) — dữ liệu mới ở BẢNG MỚI, trường mới chỉ ở model response.
 - **Tài khoản portal:** `cudan`, `tiepnhan`, `quanly`, `vesinh`, `kythuat`, `kho` / `123456` (`accounts.yaml`, giữ tài khoản cũ); `Me.profile {tower, floor, apartment}`.
 - **Việc của BQL** = ticket `VERIFYING/OUT_OF_SCOPE` có `blocker.escalated`: Agent (nguồn AGENT, scope OUT_OF_SCOPE) tự chuyển; BPTN `POST /mo/tickets/{id}/to-bql`;
@@ -293,15 +293,15 @@ KHÔNG thêm trường/giá trị enum vào doc ticket JSONB (bản Render cũ �
 
 ### Day05 labeling preparation — 2026-10-07T05:07:58.261170+00:00
 
-[Proposed data/backlog contracts](../planning/09_2026-10-07_day05-labels/specs/01-CONTRACTS.md) separate service classification from safety risk. Existing classify/assess behavior is unchanged; safety stop is evaluated before classification. Planned validators/runners are not implemented. Targets80 safety and40 classification require independent human acceptance and family-based held-out. D4-11 stays OPEN and owned by engine/safety; this plan does not claim a runtime fix.
+Proposed data/backlog contracts separate service classification from safety risk. Existing classify/assess behavior is unchanged; safety stop is evaluated before classification. Planned validators/runners are not implemented. Targets80 safety and40 classification require independent human acceptance and family-based held-out. D4-11 stays OPEN and owned by engine/safety; this plan does not claim a runtime fix.
 
 ### Day05 tools and submission recheck — 2026-10-07T06:16:13.491588+00:00
 
-The earlier planned-tools note is superseded: offline tools now exist under planning/09_2026-10-07_day05-labels/deliverables/tools/. Fresh270 tests pass;ruff check/format pass. Backlog/structure validate; full dataset fails counts without gold, and baseline refuses to score.95 manifest hashes match; D4-11 still returns NONE for trapped-child wording at S1/S5. See [Day05 daily report](submission/daily/2026-10-05.md) and evidence/submission-review-20261007/ under that plan. This is documentation verification; no runtime changes or app version bump.
+The earlier planned-tools note is superseded: offline tools now exist under planning/09_2026-10-07_day05-labels/deliverables/tools/. Fresh270 tests pass;ruff check/format pass. Backlog/structure validate; full dataset fails counts without gold, and baseline refuses to score.95 manifest hashes match; D4-11 still returns NONE for trapped-child wording at S1/S5. See Day05 daily report and evidence/submission-review-20261007/ under that plan. This is documentation verification; no runtime changes or app version bump.
 
 
-Day05 submission entry point: [main report](submission/day05-report.md), with verified local preparation and pending human/data/baseline gates; no runtime change.
+Day05 submission entry point: main report, with verified local preparation and pending human/data/baseline gates; no runtime change.
 
 
 ### Latest develop integration — 2026-10-07T13:30:26.152115+00:00
-Imported reasoning Agent/P1 from develop04491ad; local proposer Luna option preserved.3341 Python tests and270 Day05 tools pass,ruff clean. New JSON reasoning client has not been live-tested with Luna. Postgres requires revision0002_p1_doc_shape; shared DB rollout must follow reasoning-agent OPERATIONS §5 (coordinate stopping old backends). No migration/restart/shared writes performed. [Integration evidence](../planning/06_2026-10-04_readme-refresh/evidence/integration-latest-20261007/integration-report.md).
+Imported reasoning Agent/P1 from develop04491ad; local proposer Luna option preserved.3341 Python tests and270 Day05 tools pass,ruff clean. New JSON reasoning client has not been live-tested with Luna. Postgres requires revision0002_p1_doc_shape; shared DB rollout must follow reasoning-agent OPERATIONS §5 (coordinate stopping old backends). No migration/restart/shared writes performed. Integration evidence.

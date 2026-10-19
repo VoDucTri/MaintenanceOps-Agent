@@ -1,4 +1,0 @@
-All checks passed!
-ruff exit=0
-109 files already formatted
-format exit=0

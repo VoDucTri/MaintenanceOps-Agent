@@ -27,7 +27,7 @@ Từ v1.3.0 (plan 07) giao diện mang design của `portal/`. Hồ sơ: `planni
 - Kiểm: `node --check src/web/app.js`; `python -m pytest tests/test_maintenance/test_api.py -q -p no:cacheprovider`.
 
 ## 4. Chia trang danh sách — 20 ticket một lần (plan 10, v1.6.0, 2026-10-08)
-Hồ sơ: [`planning/10_2026-10-08_list-paging/`](../planning/10_2026-10-08_list-paging/plan.md).
+Hồ sơ: `planning/10_2026-10-08_list-paging/`.
 - `listCard(title, count, items, empty, paging)` — `paging = { key, ids }` (`ids[i]` là ticket của `items[i]`): chỉ gắn `PAGE_SIZE = 20` dòng; pill `count`
   và mọi ô đếm vẫn là TOÀN BỘ. Dùng ở 4 màn: `resident`, `bptn`, `department` (qua `internalList(..., pageKey)`), `bql`.
 - Bấm "‹ Trước / Sau ›" chỉ thay dòng trong `<ul data-list=key>` — KHÔNG `render()`, KHÔNG gọi API.
@@ -37,7 +37,7 @@ Hồ sơ: [`planning/10_2026-10-08_list-paging/`](../planning/10_2026-10-08_list
   trên `:8000` chỉ dùng `server_readonly.mjs` (không gửi form).
 
 ## 5. Form BPTN — lý do bắt buộc (plan 13, v1.8.1, 2026-10-09)
-Hồ sơ: [`planning/13_2026-10-09_bptn-reason-web/`](../planning/13_2026-10-09_bptn-reason-web/plan.md).
+Hồ sơ: `planning/13_2026-10-09_bptn-reason-web/`.
 - `bptnForm` → `send(body)`: trim chuỗi, `compact`, rồi nếu có một trong `VALUE_KEYS` (`location`, `info`, `category`, `department`, `asset_id`,
   `asset_onsite`) mà `note` rỗng ⇒ toast "Nhập lý do…", KHÔNG gọi API. Cùng luật với `src/mobile/js/bptn.js` và engine `bptn_resolve` (409 GUARD_FAILED).
 - Form "Xác định tài sản" (ASSET_UNCLEAR): dropdown `asset_id` hiện `name` của 4 tài sản khu vực từ `/mo/catalog` (plan 14, `app.js?v=4.2`):

@@ -1,3 +1,0 @@
-$ .venv/Scripts/python.exe -m ruff format --check planning/09_2026-10-07_day05-labels/deliverables/tools
-4 files already formatted
-EXIT=0
