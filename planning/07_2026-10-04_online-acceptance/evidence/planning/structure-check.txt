@@ -1,8 +1,0 @@
-{
-  "files": 6,
-  "links": 5,
-  "unique_cases": 15,
-  "tasks": 8,
-  "status": "PASS",
-  "online_tested": false
-}

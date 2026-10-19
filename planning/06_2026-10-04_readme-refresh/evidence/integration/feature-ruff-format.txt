@@ -1,4 +1,0 @@
-Command: python -m ruff format --check --no-cache src tests
-73 files already formatted
-
-Exit: 0

@@ -4,8 +4,8 @@ Website dựng từ bộ thiết kế `design-ticket-cu-dan/` (Trí). Từ hồ 
 (ticket, người dùng, ảnh, vật tư, đánh giá) đi qua API backend Python `/api/v1` (engine CR-BPTN-03, Agent LLM,
 tầng an toàn). Backend trỏ Supabase ⇒ portal hiện dữ liệu thật. Yêu cầu giao diện: ghi chú anh Cố (Google Doc
 `1tlvFRnAioxn7LFHTNlM9TQgYzIDzx25ZC4pFxqB3qiA`). Hồ sơ + quyết định Q01–Q19:
-[`planning/11_2026-10-09_portal-backend-api/`](../planning/11_2026-10-09_portal-backend-api/plan.md). Hồ sơ dựng ban đầu:
-[`planning/06_2026-10-07_resident-portal-next/`](../planning/06_2026-10-07_resident-portal-next/plan.md).
+`planning/11_2026-10-09_portal-backend-api/`. Hồ sơ dựng ban đầu:
+`planning/06_2026-10-07_resident-portal-next/`.
 
 ## 1. Chạy — UI mới mở ở cổng 8000
 Backend cổng 8000 có `PORTAL_URL` ⇒ mọi đường ngoài `/api/v1`, `/ui`, `/health`, `/docs` chuyển tiếp sang portal (cổng 3000).

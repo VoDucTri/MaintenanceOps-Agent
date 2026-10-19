@@ -1,4 +1,0 @@
-$ npm run typecheck
-Generating route types...
-✓ Types generated successfully
-EXIT=0

@@ -456,7 +456,7 @@ Chuỗi revision hiện có: `0001_maintops_initial → 0002_p1_doc_shape → 00
 
 **4c. Khôi phục dữ liệu.** Ảnh: giải nén `data-backup-*.tgz` đè vào `data/`. DB Supabase: restore từ backup đã chụp. Chế độ `MO_STORE=memory` không có gì để khôi phục, khởi động lại là về 12 phiếu mẫu.
 
-Sau mọi rollback, chạy lại bước kiểm tra ở mục 1 hoặc mục 2, rồi ghi sự cố vào [`brain4agent/-known-gotchas.md`](brain4agent/-known-gotchas.md).
+Sau mọi rollback, chạy lại bước kiểm tra ở mục 1 hoặc mục 2, rồi ghi sự cố vào `docs/maintenance.md`.
 
 > Phần Vercel (promote bản cũ, `vercel rollback`) chưa được thử trong repo này. Thử một lần trên bản không quan trọng trước ngày nộp.
 
@@ -497,7 +497,6 @@ tests/test_maintenance/  pytest: acceptance, engine, API, auth, safety, emergenc
 scripts/                 Công cụ đo và nộp log: eval_labels.py, eval_hard_cases.py, eval_hard_llm*.py, agent_live_eval.py
 docs/                    CR-BPTN-03.md (spec đích), evaluation.md, ai-logs.md, journal.md, worklog.md, video-demo.md,
                          maintenance.md, portal.md, mobile.md, diagrams/, screenshots/, eval/runs/, guide/ (sách của BTC)
-planning/                Hồ sơ kế hoạch (spec-first); brain4agent/: bộ nhớ dự án cho AI agent
 .github/workflows/ci.yml CI: ruff + pytest + coverage
 Dockerfile, docker-compose.yml   Backend, portal và PostgreSQL (db chỉ cho test `--pg`)
 ```
@@ -542,7 +541,7 @@ Danh sách đầy đủ và schema: Swagger <http://localhost:8000/docs>. Chi ti
 - Spec đích: [`docs/CR-BPTN-03.md`](docs/CR-BPTN-03.md); module engine: [`docs/maintenance.md`](docs/maintenance.md); cổng web: [`docs/portal.md`](docs/portal.md); app điện thoại: [`docs/mobile.md`](docs/mobile.md)
 - Kiến trúc: [`ARCHITECTURE.md`](ARCHITECTURE.md), [`docs/architecture_diagram.md`](docs/architecture_diagram.md), [`docs/diagrams/`](docs/diagrams/)
 - Bài toán và yêu cầu (phần "Active" bám code hiện hành): [`docs/01_problem_statement.md`](docs/01_problem_statement.md), [`02_product_brief.md`](docs/02_product_brief.md), [`03_lean_prd.md`](docs/03_lean_prd.md), [`04_ui_flow_wireframe.md`](docs/04_ui_flow_wireframe.md), [`05_traceability_and_review.md`](docs/05_traceability_and_review.md), [`data-contract-v1.md`](docs/data-contract-v1.md), [`playbook-v1.md`](docs/playbook-v1.md)
-- Bằng chứng nộp bài: [`docs/evaluation.md`](docs/evaluation.md), [`docs/ai-logs.md`](docs/ai-logs.md), [`docs/video-demo.md`](docs/video-demo.md), [`docs/journal.md`](docs/journal.md), [`docs/worklog.md`](docs/worklog.md), [`docs/submission/`](docs/submission/README.md), ảnh bằng chứng (Swagger, health, CI, pytest + coverage, docker compose): [`docs/screenshots/evidence/`](docs/screenshots/evidence/README.md)
+- Bằng chứng nộp bài: [`docs/evaluation.md`](docs/evaluation.md), [`docs/ai-logs.md`](docs/ai-logs.md), [`docs/video-demo.md`](docs/video-demo.md), [`docs/journal.md`](docs/journal.md), [`docs/worklog.md`](docs/worklog.md), `docs/submission/`, ảnh bằng chứng (Swagger, health, CI, pytest + coverage, docker compose): [`docs/screenshots/evidence/`](docs/screenshots/evidence/README.md)
 - Technical Guidebook (của BTC): [`docs/guide/`](docs/guide/) hoặc <https://phoenix.note.transformerlabs.ai/technical-book>
 - Quy ước đóng góp: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 

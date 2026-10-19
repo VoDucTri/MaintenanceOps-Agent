@@ -1,3 +1,0 @@
-................                                                         [100%]
-16 passed, 1 deselected in 0.43s
-EXIT=0

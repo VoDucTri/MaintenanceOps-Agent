@@ -83,7 +83,7 @@ Khung đo trong repo là **phân loại** `CLN` (vệ sinh) / `TEC` (kỹ thuậ
 | Metric | Cách tính | Mục tiêu | Loại | Kết quả đo | |
 | :-- | :-- | :-- | :-- | :-- | :-- |
 | **Trích đúng vị trí** | Tòa, tầng, căn khớp nhãn | ≥ 95% | Ngưỡng | Câu khó: **0.778 (7/9)**. Sai: f05 (hai chỗ trong một câu), u11 (chữ số fullwidth). Luật cố định trả rỗng cho tòa S9 không tồn tại; Agent LLM thì trích sai (f04, xem §4 và §7.1) | ❌ |
-| **Hỏi lại đúng lúc** | Thiếu thì hỏi lại; đủ thì không hỏi thừa | ≥ 85% cả hai chiều | Ngưỡng | Kiểm thử UI cũ 04/10 (`src/web/`, đã xoá 12/10; chưa lặp lại trên portal) (xem [results.json](../planning/07_2026-10-04_online-acceptance/deliverables/results.json)): I01 (thiếu tòa) dừng ở "Chờ bổ sung thông tin" đúng. Chưa có tỷ lệ cả hai chiều | ⚠️ |
+| **Hỏi lại đúng lúc** | Thiếu thì hỏi lại; đủ thì không hỏi thừa | ≥ 85% cả hai chiều | Ngưỡng | Kiểm thử UI cũ 04/10 (`src/web/`, đã xoá 12/10; chưa lặp lại trên portal) (xem results.json): I01 (thiếu tòa) dừng ở "Chờ bổ sung thông tin" đúng. Chưa có tỷ lệ cả hai chiều | ⚠️ |
 | **Tuân thủ quy tắc nghiệp vụ** | Ngoài giờ, thiếu ảnh, hết vật tư, dịch vụ có phí | 100% | Cổng chặn | Kiểm thử UI cũ 04/10 (`src/web/`, đã xoá 12/10; chưa lặp lại trên portal): M01 hết vật tư PASS · H02 ảnh sau xử lý bắt buộc PASS. Ngoài giờ: cờ hiển thị nhưng phòng ban vẫn nhận việc, **chưa xác nhận đúng thiết kế** (quan sát phụ trong báo cáo UI 04/10). Dịch vụ có phí: chưa đo | ⚠️ chưa đủ |
 | **Không tạo ticket trùng** | Ca đã có ticket mở được gắn vào ticket cũ ÷ tổng | ≥ 90% | Ngưỡng | Kiểm thử UI cũ 04/10 (`src/web/`, đã xoá 12/10; chưa lặp lại trên portal): U01 1/1 PASS (ticket nghi trùng bị giữ cho BPTN quyết). Chưa có tỷ lệ | ⚠️ |
 

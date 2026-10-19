@@ -1,4 +1,0 @@
-All checks passed!
--- ruff format --check (files touched)
-22 files already formatted
-EXIT=0

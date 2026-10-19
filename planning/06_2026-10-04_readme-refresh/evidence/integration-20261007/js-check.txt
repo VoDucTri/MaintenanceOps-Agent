@@ -1,4 +1,0 @@
-node --check src/web/app.js
-
-
-EXIT_CODE=0

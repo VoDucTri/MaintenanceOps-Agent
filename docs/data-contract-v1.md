@@ -140,7 +140,7 @@ Chi tiết đánh giá nằm ở bảng riêng: `RatingDetail(ticket_id, tags[],
 
 ## K. Persistence
 
-`CaseRepository` theo `MO_STORE` (`memory` mặc định | `postgres` schema `maintops`, Alembic `0001…0006`); ảnh theo `MO_PHOTO_STORE`. `PostgresRepository.list()` cache theo `xmin`, object từ `list()` chỉ đọc. Serverless dùng `MO_DB_POOL=none`. Xem [`../brain4agent/-data-architecture.md`](../brain4agent/-data-architecture.md).
+`CaseRepository` theo `MO_STORE` (`memory` mặc định | `postgres` schema `maintops`, Alembic `0001…0006`); ảnh theo `MO_PHOTO_STORE`. `PostgresRepository.list()` cache theo `xmin`, object từ `list()` chỉ đọc. Serverless dùng `MO_DB_POOL=none`. Xem `../brain4agent/-data-architecture.md`.
 
 ## L. Đã bỏ khỏi contract hiện hành
 

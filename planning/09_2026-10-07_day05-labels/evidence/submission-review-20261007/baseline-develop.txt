@@ -1,1 +1,0 @@
-NO_VALID_GOLD: no case in DEVELOP has valid ACCEPTED gold

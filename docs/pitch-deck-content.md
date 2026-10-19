@@ -58,7 +58,7 @@
 
 - **Trên slide:** "Ghi cả chỗ đã gỡ, lẫn chỗ còn sai" · bảng Thách thức/Cách gỡ: phiên trên serverless → token ký HMAC · DB hết slot kết nối → không giữ pool · Agent trả lời 16–20 s → portal chờ 60 s · khung cam "Agent còn sai": h03 tiếng nổ phòng điện → chỉ "chưa rõ"; f04 trích "Tòa S9" → bị chặn, hỏi lại · bài học: cần nhãn held-out độc lập · LLM hiểu nghĩa, không vá regex · tài liệu bám code.
 - **Ghi chú nói:** thách thức thật đã gặp, ghi trong changelog và journal: phiên đăng nhập trên serverless (token ký HMAC), kết nối DB hết slot (`MO_DB_POOL=none`), thời gian chờ Agent 16–20 giây. Nếu làm lại: đo held-out và user test sớm hơn.
-- **Nguồn:** [brain4agent/changelog.md](../brain4agent/changelog.md) (v1.17.2, v1.17.3); [journal.md](journal.md) cho dòng thời gian từng tuần.
+- **Nguồn:** brain4agent/changelog.md (v1.17.2, v1.17.3); [journal.md](journal.md) cho dòng thời gian từng tuần.
 
 ## Slide 10 — Team và bước tiếp theo
 
